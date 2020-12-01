@@ -21,6 +21,9 @@ RUN unzip NotoSansCJKjp-hinted.zip && \
     chmod 644 -R /usr/share/fonts/noto/ && \
     fc-cache -fv
 
+# Install for allure commandline
+RUN apt-get -y install openjdk-8-jre
+
 # Install latest chrome dev package.
 # Note: this installs the necessary libs to make the bundled version of Chromium that Puppeteer
 # installs, work.
@@ -54,6 +57,7 @@ COPY . /codecept
 
 RUN chown -R pptruser:pptruser /codecept
 RUN runuser -l pptruser -c 'npm install --loglevel=warn --prefix /codecept'
+RUN npm install --loglevel=warn -g allure-commandline --save-dev
 
 RUN ln -s /codecept/bin/codecept.js /usr/local/bin/codeceptjs
 RUN mkdir /tests
