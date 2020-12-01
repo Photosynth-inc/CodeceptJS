@@ -10,6 +10,17 @@ RUN apt-get update && \
       apt-get install -y libgtk2.0-0 libgconf-2-4 \
       libasound2 libxtst6 libxss1 libnss3 xvfb
 
+# Install for Japanese display
+RUN apt-get install -y udev ttf-freefont
+RUN mkdir /noto
+ADD https://noto-website.storage.googleapis.com/pkgs/NotoSansCJKjp-hinted.zip /noto
+WORKDIR /noto
+RUN unzip NotoSansCJKjp-hinted.zip && \
+    mkdir -p /usr/share/fonts/noto && \
+    cp *.otf /usr/share/fonts/noto && \
+    chmod 644 -R /usr/share/fonts/noto/ && \
+    fc-cache -fv
+
 # Install latest chrome dev package.
 # Note: this installs the necessary libs to make the bundled version of Chromium that Puppeteer
 # installs, work.
